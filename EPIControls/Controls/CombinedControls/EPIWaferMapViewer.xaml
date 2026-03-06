@@ -6,18 +6,25 @@
              xmlns:local="clr-namespace:EPIControls.Controls.CombinedControls"
              xmlns:mycontrol="clr-namespace:EPIControls.Controls.BaseUserControls"
              mc:Ignorable="d" Background="Transparent">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="9*"/>
-            <ColumnDefinition Width="200"/>
-        </Grid.ColumnDefinitions>
-        <mycontrol:EPIWaferMap x:Name="WaferMap" Grid.Column="0" Grid.Row="0"/>
-        <mycontrol:EPIWaferMapRange x:Name="WaferMapRange" Grid.Column="1" Grid.Row="0"/>
-        <TextBlock Grid.Column="0" Grid.Row="1"/>
-        <TextBlock Grid.Column="1" Grid.Row="1"/>
-    </Grid>
+    <Border BorderBrush="DarkGray" BorderThickness=".8">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="9*"/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
+            <mycontrol:EPIWaferMap x:Name="WaferMap" Grid.Column="0" Grid.Row="0"/>
+            <mycontrol:EPIWaferMapRange x:Name="WaferMapRange" Grid.Column="1" Grid.Row="0"/>
+            <Border BorderBrush="DarkGray" BorderThickness=".8">
+                <TextBlock Grid.Column="0" Grid.Row="1"/>
+            </Border>
+            <Border  BorderBrush="DarkGray" BorderThickness=".8">
+                <TextBlock Grid.Column="1" Grid.Row="1"/>
+            </Border>
+            
+        </Grid>
+    </Border>
 </UserControl>

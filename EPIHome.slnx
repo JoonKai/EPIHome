@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="EPI/EPI.csproj" />
-  <Project Path="EPIControls/EPIControls.csproj" />
-  <Project Path="EPIHome/EPIHome.csproj" />
+  <Project Path="EPI/EPI.csproj" Id="32816b51-b24d-44d2-997d-8cba4aebb58a" />
+  <Project Path="EPIControls/EPIControls.csproj" Id="0a71297b-5610-4dab-85db-ba2df3ed2a6c" />
+  <Project Path="EPIHome/EPIHome.csproj" Id="c58c6083-51ca-41dd-bc33-fc3b9b829301" />
 </Solution>
