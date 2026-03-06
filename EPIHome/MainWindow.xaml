@@ -1,0 +1,220 @@
+﻿<Window x:Class="EPIHome.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EPIHome"
+        xmlns:combined="clr-namespace:EPIControls.Controls.CombinedControls;assembly=EPIControls"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <!-- 툴바 버튼 스타일 -->
+        <Style x:Key="ToolbarButton" TargetType="Button">
+            <Setter Property="Background" Value="#FF313244"/>
+            <Setter Property="Foreground" Value="#FFCDD6F4"/>
+            <Setter Property="BorderBrush" Value="#FF45475A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF45475A"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF585B70"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 레이블 스타일 -->
+        <Style x:Key="InfoLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FFA6ADC8"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="InfoValue" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FFCDD6F4"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"/>
+            <!-- 툴바 -->
+            <RowDefinition Height="*"/>
+            <!-- 메인 -->
+            <RowDefinition Height="28"/>
+            <!-- 상태바 -->
+        </Grid.RowDefinitions>
+
+        <!-- ========== 툴바 ========== -->
+        <Border Grid.Row="0" Background="#FF181825" BorderBrush="#FF313244" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                <Button Content="📂  파일 열기"
+                        Command="{Binding OpenFileCommand}"
+                        Style="{StaticResource ToolbarButton}"/>
+                <Separator Width="1" Background="#FF45475A" Margin="10,8"/>
+                <TextBlock Text="웨이퍼:" Style="{StaticResource InfoLabel}" Margin="6,0,4,0"/>
+                <TextBlock Text="{Binding WaferId, FallbackValue='—'}"
+                           Style="{StaticResource InfoValue}"/>
+                <Separator Width="1" Background="#FF45475A" Margin="12,8"/>
+                <TextBlock Text="{Binding PwStatText, FallbackValue='—'}"
+                           Style="{StaticResource InfoLabel}"/>
+                <Separator Width="1" Background="#FF45475A" Margin="12,8"/>
+                <TextBlock Text="셀 수:" Style="{StaticResource InfoLabel}" Margin="0,0,4,0"/>
+                <TextBlock Text="{Binding TotalCells}" Style="{StaticResource InfoValue}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ========== 메인 영역 ========== -->
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <!-- 웨이퍼 맵 -->
+                <ColumnDefinition Width="10"/>
+                <!-- 스플리터 -->
+                <ColumnDefinition Width="220"/>
+                <!-- 우측 패널 -->
+            </Grid.ColumnDefinitions>
+
+            <!-- 웨이퍼 맵 복합 컨트롤 -->
+            <combined:EPIWaferMapViewer
+                Grid.Column="0"
+                MapCells="{Binding MapCells}"
+                WaferSize="{Binding WaferSize}"
+                EdgeExclusion="{Binding EdgeExclusion}"
+                CellWidth="{Binding CellWidth}"
+                CellHeight="{Binding CellHeight}"
+                UseAutoRange="{Binding UseAutoRange}"
+                RangeStart="{Binding RangeStart}"
+                RangeEnd="{Binding RangeEnd}"
+                />
+
+            <!-- 스플리터 -->
+            <GridSplitter Grid.Column="1"
+                          Width="6"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Stretch"
+                          Background="#FF313244"
+                          ShowsPreview="True"/>
+
+            <!-- 우측 패널 -->
+            <Border Grid.Column="2"
+                    Background="#FF181825"
+                    BorderBrush="#FF313244"
+                    BorderThickness="1"
+                    CornerRadius="6"
+                    Padding="12">
+                <StackPanel>
+                    <TextBlock Text="설정" Foreground="#FF89B4FA"
+                               FontSize="13" FontWeight="Bold" Margin="0,0,0,12"/>
+
+                    <!-- 레인지 설정 -->
+                    <TextBlock Text="레인지 (PeakWavelength)" Style="{StaticResource InfoLabel}" Margin="0,0,0,6"/>
+
+                    <CheckBox Content="자동 레인지"
+                              IsChecked="{Binding UseAutoRange}"
+                              Foreground="#FFCDD6F4"
+                              Margin="0,0,0,8"/>
+
+                    <!--<Grid IsEnabled="{Binding UseAutoRange, Converter={StaticResource InverseBoolConverter}}"-->
+                    <Grid IsEnabled="{Binding UseAutoRange}"
+                          Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="6"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Min" Style="{StaticResource InfoLabel}" Width="32"/>
+                        <TextBox Grid.Row="0" Grid.Column="1"
+                                 Text="{Binding RangeStart, StringFormat=F2, UpdateSourceTrigger=LostFocus}"
+                                 Background="#FF313244" Foreground="#FFCDD6F4"
+                                 BorderBrush="#FF45475A" Padding="4,2"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Max" Style="{StaticResource InfoLabel}" Width="32"/>
+                        <TextBox Grid.Row="2" Grid.Column="1"
+                                 Text="{Binding RangeEnd, StringFormat=F2, UpdateSourceTrigger=LostFocus}"
+                                 Background="#FF313244" Foreground="#FFCDD6F4"
+                                 BorderBrush="#FF45475A" Padding="4,2"/>
+                    </Grid>
+
+                    <Separator Background="#FF313244" Margin="0,8"/>
+
+                    <!-- 웨이퍼 파라미터 -->
+                    <TextBlock Text="웨이퍼 파라미터" Style="{StaticResource InfoLabel}" Margin="0,0,0,6"/>
+
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="6"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="6"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="6"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="WaferSize" Style="{StaticResource InfoLabel}"/>
+                        <TextBox Grid.Row="0" Grid.Column="1"
+                                 Text="{Binding WaferSize, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
+                                 Background="#FF313244" Foreground="#FFCDD6F4"
+                                 BorderBrush="#FF45475A" Padding="4,2"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="EdgeExcl" Style="{StaticResource InfoLabel}"/>
+                        <TextBox Grid.Row="2" Grid.Column="1"
+                                 Text="{Binding EdgeExclusion, StringFormat=F1, UpdateSourceTrigger=LostFocus}"
+                                 Background="#FF313244" Foreground="#FFCDD6F4"
+                                 BorderBrush="#FF45475A" Padding="4,2"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="CellWidth" Style="{StaticResource InfoLabel}"/>
+                        <TextBox Grid.Row="4" Grid.Column="1"
+                                 Text="{Binding CellWidth, StringFormat=F2, UpdateSourceTrigger=LostFocus}"
+                                 Background="#FF313244" Foreground="#FFCDD6F4"
+                                 BorderBrush="#FF45475A" Padding="4,2"/>
+
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="CellHeight" Style="{StaticResource InfoLabel}"/>
+                        <TextBox Grid.Row="6" Grid.Column="1"
+                                 Text="{Binding CellHeight, StringFormat=F2, UpdateSourceTrigger=LostFocus}"
+                                 Background="#FF313244" Foreground="#FFCDD6F4"
+                                 BorderBrush="#FF45475A" Padding="4,2"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ========== 상태바 ========== -->
+        <Border Grid.Row="2" Background="#FF181825" BorderBrush="#FF313244" BorderThickness="0,1,0,0">
+            <TextBlock Text="{Binding StatusMessage}"
+                       Foreground="#FFA6ADC8"
+                       FontSize="11"
+                       VerticalAlignment="Center"
+                       Margin="12,0"/>
+        </Border>
+    </Grid>
+</Window>

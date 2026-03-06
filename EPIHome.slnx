@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="EPI/EPI.csproj" />
+  <Project Path="EPIControls/EPIControls.csproj" />
+  <Project Path="EPIHome/EPIHome.csproj" />
+</Solution>

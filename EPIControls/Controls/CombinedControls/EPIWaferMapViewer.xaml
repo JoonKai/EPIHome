@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="EPIControls.Controls.CombinedControls.EPIWaferMapViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EPIControls.Controls.CombinedControls"
+             xmlns:mycontrol="clr-namespace:EPIControls.Controls.BaseUserControls"
+             mc:Ignorable="d" Background="DarkGray">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <mycontrol:EPIWaferMap x:Name="WaferMap" Grid.Column="0" Grid.Row="0"/>
+        <mycontrol:EPIWaferMapRange x:Name="WaferMapRange" Grid.Column="1" Grid.Row="0"/>
+        <TextBlock Grid.Column="0" Grid.Row="1"/>
+        <TextBlock Grid.Column="1" Grid.Row="1"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="EPIControls.Controls.BaseUserControls.EPIWaferMapRange"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EPIControls.Controls.BaseUserControls"
+             mc:Ignorable="d" 
+             MouseWheel="UserControl_MouseWheel"
+             ContextMenuOpening="ContextMenu_ContextMenuOpening"
+             MouseMove="UserControl_MouseMove"
+             Margin="0"
+             Padding="0"
+             SnapsToDevicePixels="True"
+             Background="Transparent" BorderBrush="White" BorderThickness="1">
+    <Grid/>
+    <FrameworkElement.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="Range">
+                <MenuItem Click="chkAutoRange_Click" x:Name="chkAutoRange" Header="Use AutoRange" IsCheckable="true"/>
+                <Separator/>
+                <MenuItem Click="mnuSetRange_Click" x:Name="mnuSetRange" Header="Set"/>
+            </MenuItem>
+            <MenuItem Header="Distribution">
+                <MenuItem Click="chkEnableDistribution_Click" x:Name="chkEnableDistribution" Header="Enable"/>
+                <MenuItem Click="chkDisableDistribution_Click" x:Name="chkDisableDistribution" Header="Disable"/>
+                <Separator/>
+                <MenuItem Click="chkUseOverlap_Click" x:Name="chkUseOverlap" Header="Use Overlap" IsCheckable="true"/>
+                <MenuItem Click="chkUseLogScaleBar_Clicked" x:Name="chkUseLogScaleBar" Header="Use LogScaleBar"
+                            IsCheckable="true"/>
+                <MenuItem Click="chkUseIgnoreOutOfRange_Click" x:Name="chkUseIgnoreOutOfRange" Header="Ignore OutOf Range"
+                            IsCheckable="true"/>
+            </MenuItem>
+            <MenuItem Header="Color Set">
+                <MenuItem Click="SelectGrayColor_Click" Header="Gray Scale"/>
+                <MenuItem Click="SelectBlueColor_Click" Header="Blue Scale"/>
+                <MenuItem Header="Complementary Color">
+                    <MenuItem Click="SelectComplementaryColor1_Click" Header="Orange-Blue"/>
+                    <MenuItem Click="SelectComplementaryColor2_Click" Header="Violet-Yellow"/>
+                    <MenuItem Click="SelectComplementaryColor3_Click" Header="Green-Red"/>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Click="SelectPalette1Color_Click" Header="Palette 1"/>
+                <MenuItem Click="SelectPalette2Color_Click" Header="Palette 2"/>
+                <MenuItem Click="SelectPalette3Color_Click" Header="Palette 3"/>
+                <Separator/>
+                <MenuItem Click="SelectCustomPalette_Click" Header="Custom"/>
+            </MenuItem>
+            <MenuItem Header="Display Format">
+                <MenuItem Click="OnDataFormat_Default_Clicked" Header="Auto"/>
+                <MenuItem Click="OnDataFormat_Clicked" Header="Set"/>
+            </MenuItem>
+        </ContextMenu>
+    </FrameworkElement.ContextMenu>
+</UserControl>
