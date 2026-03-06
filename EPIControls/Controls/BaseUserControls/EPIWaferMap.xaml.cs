@@ -90,11 +90,14 @@ namespace EPIControls.Controls.BaseUserControls
         }
         #endregion
 
+        #region /////멤버변수
         public event EventHandler<WaferCellClickedEventArgs> CellClicked;
         private readonly Dictionary<(int Row, int Col), WaferCell> _cellLookup = new Dictionary<(int Row, int Col), WaferCell>();
         private INotifyCollectionChanged _cellsObservable;
         private (int Row, int Col)? _hoverCell;
+        #endregion
 
+        #region /////생성자
         public EPIWaferMap()
         {
             InitializeComponent();
@@ -102,11 +105,72 @@ namespace EPIControls.Controls.BaseUserControls
             //RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.NearestNeighbor);
             SizeChanged += OnControlSizeChanged;
         }
+        #endregion
+
+        #region /////이벤트
         private void OnControlSizeChanged(object sender, SizeChangedEventArgs e)
         {
             InvalidateVisual();
         }
+        protected override void OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
 
+            var hit = HitTestCell(e.GetPosition(this));
+            if (hit != null)
+            {
+                CellClicked?.Invoke(this, new WaferCellClickedEventArgs(hit.Value.Cell, hit.Value.Row, hit.Value.Col));
+                e.Handled = true;
+            }
+        }
+
+        protected override void OnMouseMove(System.Windows.Input.MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            var hit = HitTestCell(e.GetPosition(this));
+            var next = hit == null ? ((int Row, int Col)?)null : (hit.Value.Row, hit.Value.Col);
+            if (_hoverCell != next)
+            {
+                _hoverCell = next;
+                InvalidateVisual();
+            }
+        }
+
+        protected override void OnMouseLeave(System.Windows.Input.MouseEventArgs e)
+        {
+            base.OnMouseLeave(e);
+            if (_hoverCell != null)
+            {
+                _hoverCell = null;
+                InvalidateVisual();
+            }
+        }
+        private static void OnMapCellsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewer = d as EPIWaferMap;
+            if (viewer == null)
+                return;
+
+            // 기존 구독 해제
+            viewer.UnsubscribeMapCells();
+
+            // 새 소스 구독
+            var newSource = e.NewValue as IEnumerable;
+            if (newSource != null)
+                viewer.SubscribeMapCells(newSource);
+
+            viewer.RebuildCellLookup();
+            viewer.InvalidateVisual();
+        }
+        private void OnMapCellsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            RebuildCellLookup();
+            InvalidateVisual();
+        }
+        #endregion
+
+        #region /////렌더링
         protected override void OnRender(DrawingContext dc)
         {
             base.OnRender(dc);
@@ -143,7 +207,7 @@ namespace EPIControls.Controls.BaseUserControls
 
             // ✅ 순서 중요
             // 1. 그림자 먼저 (웨이퍼 뒤에)
-            DrawShadow(dc, center, waferRadius);
+            //DrawShadow(dc, center, waferRadius);
 
             // 2. 웨이퍼 베이스
             dc.DrawEllipse(WaferFill, null, center, waferRadius, waferRadius);
@@ -246,7 +310,43 @@ namespace EPIControls.Controls.BaseUserControls
                 dc.DrawRectangle(fill, pen, rect);
             }
         }
+        private void DrawHoverCell(DrawingContext dc, Rect innerRect, double waferSizeMm, double edgeExclusionMm, Point center, double innerRadius)
+        {
+            if (_hoverCell == null)
+            {
+                return;
+            }
 
+            var drawableMm = waferSizeMm - (edgeExclusionMm * 2.0);
+            if (drawableMm <= 0.0)
+            {
+                return;
+            }
+
+            var cellWidthPx = Math.Max(1.0, CellWidth * (innerRect.Width / drawableMm));
+            var cellHeightPx = Math.Max(1.0, CellHeight * (innerRect.Height / drawableMm));
+            if (cellWidthPx <= 0.0 || cellHeightPx <= 0.0)
+            {
+                return;
+            }
+
+            var rect = new Rect(
+                center.X + (_hoverCell.Value.Col * cellWidthPx) - (cellWidthPx / 2.0),
+                center.Y + (_hoverCell.Value.Row * cellHeightPx) - (cellHeightPx / 2.0),
+                cellWidthPx,
+                cellHeightPx);
+
+            if (!IsRectInsideCircle(rect, center, innerRadius))
+            {
+                return;
+            }
+
+            var pen = new Pen(Brushes.Red, 4);
+            dc.DrawRectangle(null, pen, rect);
+        }
+        #endregion
+
+        #region /////메소드
         private static bool AnyInvalid(params double[] values)
         {
             foreach (var value in values)
@@ -283,77 +383,6 @@ namespace EPIControls.Controls.BaseUserControls
 
             return true;
         }
-
-        private void DrawHoverCell(DrawingContext dc, Rect innerRect, double waferSizeMm, double edgeExclusionMm, Point center, double innerRadius)
-        {
-            if (_hoverCell == null)
-            {
-                return;
-            }
-
-            var drawableMm = waferSizeMm - (edgeExclusionMm * 2.0);
-            if (drawableMm <= 0.0)
-            {
-                return;
-            }
-
-            var cellWidthPx = Math.Max(1.0, CellWidth * (innerRect.Width / drawableMm));
-            var cellHeightPx = Math.Max(1.0, CellHeight * (innerRect.Height / drawableMm));
-            if (cellWidthPx <= 0.0 || cellHeightPx <= 0.0)
-            {
-                return;
-            }
-
-            var rect = new Rect(
-                center.X + (_hoverCell.Value.Col * cellWidthPx) - (cellWidthPx / 2.0),
-                center.Y + (_hoverCell.Value.Row * cellHeightPx) - (cellHeightPx / 2.0),
-                cellWidthPx,
-                cellHeightPx);
-
-            if (!IsRectInsideCircle(rect, center, innerRadius))
-            {
-                return;
-            }
-
-            var pen = new Pen(Brushes.Red, 4);
-            dc.DrawRectangle(null, pen, rect);
-        }
-
-        protected override void OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonDown(e);
-
-            var hit = HitTestCell(e.GetPosition(this));
-            if (hit != null)
-            {
-                CellClicked?.Invoke(this, new WaferCellClickedEventArgs(hit.Value.Cell, hit.Value.Row, hit.Value.Col));
-                e.Handled = true;
-            }
-        }
-
-        protected override void OnMouseMove(System.Windows.Input.MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-
-            var hit = HitTestCell(e.GetPosition(this));
-            var next = hit == null ? ((int Row, int Col)?)null : (hit.Value.Row, hit.Value.Col);
-            if (_hoverCell != next)
-            {
-                _hoverCell = next;
-                InvalidateVisual();
-            }
-        }
-
-        protected override void OnMouseLeave(System.Windows.Input.MouseEventArgs e)
-        {
-            base.OnMouseLeave(e);
-            if (_hoverCell != null)
-            {
-                _hoverCell = null;
-                InvalidateVisual();
-            }
-        }
-
         private (WaferCell Cell, int Row, int Col)? HitTestCell(Point point)
         {
             var width = ActualWidth;
@@ -409,25 +438,6 @@ namespace EPIControls.Controls.BaseUserControls
 
             return null;
         }
-
-        private static void OnMapCellsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var viewer = d as EPIWaferMap;
-            if (viewer == null)
-                return;
-
-            // 기존 구독 해제
-            viewer.UnsubscribeMapCells();
-
-            // 새 소스 구독
-            var newSource = e.NewValue as IEnumerable;
-            if (newSource != null)
-                viewer.SubscribeMapCells(newSource);
-
-            viewer.RebuildCellLookup();
-            viewer.InvalidateVisual();
-        }
-
         private void SubscribeMapCells(IEnumerable source)
         {
             if (source == null)
@@ -451,11 +461,6 @@ namespace EPIControls.Controls.BaseUserControls
             _cellsObservable.CollectionChanged -= OnMapCellsCollectionChanged;
             _cellsObservable = null;
         }
-        private void OnMapCellsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            RebuildCellLookup();
-            InvalidateVisual();
-        }
 
         private void RebuildCellLookup()
         {
@@ -473,6 +478,9 @@ namespace EPIControls.Controls.BaseUserControls
                 }
             }
         }
+        #endregion
+
+
     }
 
     public sealed class WaferCell

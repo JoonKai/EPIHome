@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:EPIHome"
         xmlns:combined="clr-namespace:EPIControls.Controls.CombinedControls;assembly=EPIControls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Background="#FF313244">
     <Window.Resources>
         <!-- 툴바 버튼 스타일 -->
         <Style x:Key="ToolbarButton" TargetType="Button">

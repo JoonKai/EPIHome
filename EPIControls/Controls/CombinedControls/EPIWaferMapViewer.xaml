@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EPIControls.Controls.CombinedControls"
              xmlns:mycontrol="clr-namespace:EPIControls.Controls.BaseUserControls"
-             mc:Ignorable="d" Background="DarkGray">
+             mc:Ignorable="d" Background="Transparent">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
