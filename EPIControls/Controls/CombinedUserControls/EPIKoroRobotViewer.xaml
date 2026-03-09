@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="EPIControls.Controls.CombinedUserControls.EPIKoroRobotViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EPIControls.Controls.CombinedUserControls"
+             xmlns:robot="clr-namespace:EPIControls.Controls.BaseUserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="230"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- 로봇 컨트롤 -->
+        <robot:EPIKoroRobot x:Name="RobotControl"
+                            Grid.Column="0"
+                            Margin="10"
+                            Axis1Angle="-53.1"
+                            Axis2Angle="113.3"
+                            Axis3Angle="119.1"/>
+
+        <!-- 축 슬라이더 패널 -->
+        <Border Grid.Column="1" Margin="0,10,10,10"
+                Background="White" CornerRadius="6"
+                BorderBrush="#CCCCCC" BorderThickness="1">
+            <StackPanel Margin="16" VerticalAlignment="Center">
+                <TextBlock Text="축 제어" FontSize="16" FontWeight="Bold"
+                           Margin="0,0,0,20" HorizontalAlignment="Center"/>
+
+                <!-- Axis 1 -->
+                <TextBlock Text="Axis 1  ①" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <Slider x:Name="Axis1Slider"
+                        Minimum="-180" Maximum="180" Value="-53.1"
+                        TickFrequency="30" TickPlacement="BottomRight"
+                        ValueChanged="OnAxis1Changed"/>
+                <TextBlock x:Name="Axis1Label" Text="-53.1°"
+                           Foreground="#555555" Margin="0,2,0,18"/>
+
+                <!-- Axis 2 -->
+                <TextBlock Text="Axis 2  ②" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <Slider x:Name="Axis2Slider"
+                        Minimum="-180" Maximum="180" Value="113.3"
+                        TickFrequency="30" TickPlacement="BottomRight"
+                        ValueChanged="OnAxis2Changed"/>
+                <TextBlock x:Name="Axis2Label" Text="113.3°"
+                           Foreground="#555555" Margin="0,2,0,18"/>
+
+                <!-- Axis 3 -->
+                <TextBlock Text="Axis 3  ③" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <Slider x:Name="Axis3Slider"
+                        Minimum="-180" Maximum="180" Value="119.1"
+                        TickFrequency="30" TickPlacement="BottomRight"
+                        ValueChanged="OnAxis3Changed"/>
+                <TextBlock x:Name="Axis3Label" Text="119.1°"
+                           Foreground="#555555" Margin="0,2,0,0"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
