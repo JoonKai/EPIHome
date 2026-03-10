@@ -7,21 +7,21 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:combined="clr-namespace:EPIControls.Controls.CombinedUserControls;assembly=EPIControls"
         mc:Ignorable="d"
-        Title="MainView" Height="450" Width="1400" Background="#FF313244">
+        Title="MainView" Height="600" Width="1000" Background="#FF313244">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
+            <!--<ColumnDefinition Width="1*"/>-->
         </Grid.ColumnDefinitions>
         <ContentControl Grid.Column="0"
                         cal:View.Model="{Binding ActiveItem}"
                         HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"/>
-        <Border Grid.Column="1" 
+        <!--<Border Grid.Column="1" 
                 Margin="8" 
                 Background="#FF1E1E2E" 
                 CornerRadius="6">
             <combined:EPIRndRobotViewer/>
-        </Border>
+        </Border>-->
     </Grid>
 </Window>

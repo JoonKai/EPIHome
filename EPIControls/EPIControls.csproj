@@ -57,14 +57,23 @@
     <Compile Include="Controls\BaseUserControls\EPIWaferMap.xaml.cs">
       <DependentUpon>EPIWaferMap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\BaseUserControls\EPIWaferMap3D.xaml.cs">
+      <DependentUpon>EPIWaferMap3D.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\BaseUserControls\EPIWaferMapRange.xaml.cs">
       <DependentUpon>EPIWaferMapRange.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CombinedUserControls\EPICompareRunViewer.xaml.cs">
+      <DependentUpon>EPICompareRunViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CombinedUserControls\EPIKoroRobotViewer.xaml.cs">
       <DependentUpon>EPIKoroRobotViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CombinedUserControls\EPIRndRobotViewer.xaml.cs">
       <DependentUpon>EPIRndRobotViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CombinedUserControls\EPIWaferMap3DViewer.xaml.cs">
+      <DependentUpon>EPIWaferMap3DViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CombinedUserControls\EPIWaferMapViewer.xaml.cs">
       <DependentUpon>EPIWaferMapViewer.xaml</DependentUpon>
@@ -104,7 +113,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\BaseUserControls\EPIWaferMap3D.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\BaseUserControls\EPIWaferMapRange.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CombinedUserControls\EPICompareRunViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -113,6 +130,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CombinedUserControls\EPIRndRobotViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CombinedUserControls\EPIWaferMap3DViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -74,10 +74,14 @@
     <Compile Include="BootStrapper.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModelBase.cs" />
+    <Compile Include="ViewModels\EPIWaferMap3DViewModel.cs" />
     <Compile Include="ViewModels\EPIWaferMapViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\EPIWaferMapView.xaml.cs">
       <DependentUpon>EPIWaferMapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EPIWaferMap3DView.xaml.cs">
+      <DependentUpon>EPIWaferMap3DView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -112,6 +116,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\EPIWaferMapView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EPIWaferMap3DView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

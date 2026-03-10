@@ -17,7 +17,8 @@ namespace EPIHome.ViewModels
         // ✅ 앱 시작 시 자동으로 WaferMap 활성화
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            await ActivateItemAsync(new EPIWaferMapViewModel(), cancellationToken);
+            //await ActivateItemAsync(new EPIWaferMapViewModel(), cancellationToken);
+            await ActivateItemAsync(new EPIWaferMap3DViewModel(), cancellationToken);
         }
 
         public async Task OpenWaferMap()
